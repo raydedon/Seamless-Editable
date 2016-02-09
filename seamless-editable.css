@@ -1,0 +1,29 @@
+.seamless-editable-input {
+    margin: 0;
+    border: 1px solid transparent;
+    padding: 0 10px;
+    position: relative;
+    right: 10px;
+    border-radius: 2px;
+    white-space: pre;
+}
+
+.seamless-editable-input:hover {
+    border-color: #CCCCCC;
+}
+
+.seamless-editable-input:focus {
+    border-color: #4d90fe;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -webkit-box-shadow: inset 0px 1px 2px rgba(0,0,0,0.1);
+    -moz-box-shadow: inset 0px 1px 2px rgba(0,0,0,0.1);
+    box-shadow: inset 0px 1px 2px rgba(0,0,0,0.1);
+    outline: none;
+}
+
+.seamless-editable-dummy-container {
+    white-space: pre;
+    position: absolute;
+    visibility: hidden;
+}
