@@ -10,12 +10,10 @@
             maxlength: 0,
             toolTipTitle: '',
             toolTipPlacement: 'right',
-            toolTipTrigger: 'click | hover | manual',
-            value: ''
+            toolTipTrigger: 'click | hover | manual'
         }, options );
 
-        $(this).val(settings.value);
-        settings.lastsaveditemname = settings.value;
+        settings.lastsaveditemname = $(this).val();
 
         if ($('.seamless-editable-dummy-container').length === 0) {
             $('body').prepend('<span class="seamless-editable-dummy-container"></span>');
@@ -52,7 +50,7 @@
                     return false;
                 }
                 settings.lastsaveditemname = $(this).val();
-                // call ajax here
+                // do the ajax call here to save the data.
             })
             .click(function() {
                 $(this).data('escapepressed', false);
@@ -94,7 +92,7 @@
             text = $(obj).attr('placeholder').trim();
         }
         var maxlength = $(obj).attr('maxlength');
-        if (maxlength != undefined && maxlength > 0 && text.length >= maxlength) {
+        if (maxlength != undefined && maxlength > 0 && text.length > maxlength) {
             return false;
         }
         $('.seamless-editable-dummy-container').text(text);
@@ -112,4 +110,3 @@
         $(obj).width($('.seamless-editable-dummy-container').width() + 5);
     }
 }( jQuery ));
-
