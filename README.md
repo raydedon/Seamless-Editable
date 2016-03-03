@@ -5,6 +5,7 @@ Seamlessly a user can edit any item on a page. following are the option to custo
 3. toolTipTitle
 4. toolTipPlacement
 5. toolTipTrigger
+6. postKeyPressFunction
 
 Dependencies:-
 1. jquery.
