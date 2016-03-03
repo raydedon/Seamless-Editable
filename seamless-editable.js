@@ -10,7 +10,8 @@
             maxlength: 0,
             toolTipTitle: '',
             toolTipPlacement: 'right',
-            toolTipTrigger: 'click | hover | manual'
+            toolTipTrigger: 'click | hover | manual',
+            methodname: ''
         }, options );
 
         settings.lastsaveditemname = $(this).val();
@@ -50,7 +51,10 @@
                     return false;
                 }
                 settings.lastsaveditemname = $(this).val();
-                // do the ajax call here to save the data.
+                var url = '/a/sle?methodname=' + settings.methodname + '&itemname=' + $(this).val();
+                $.ajax({
+                    url: url
+                });
             })
             .click(function() {
                 $(this).data('escapepressed', false);
@@ -64,7 +68,11 @@
                         return false;
                     } else {
                         var c = String.fromCharCode(e.keyCode | e.charCode);
-                        synchSeamlessEditable(this, $(this).val() + c);
+                        var selectionStartPos = this.selectionStart;
+                        var selectionEndPos = this.selectionEnd;
+                        var startSubStr = $(this).val().substr(0, selectionStartPos);
+                        var endSubStr = $(this).val().substr(selectionEndPos, $(this).val().length);
+                        synchSeamlessEditable(this, startSubStr + c + endSubStr);
                     }
                 }
             })
@@ -85,28 +93,33 @@
                     return false;
                 }
             });
-    };
 
-    function synchSeamlessEditable(obj, text) {
-        if (!text && $(obj).attr('placeholder')) {
-            text = $(obj).attr('placeholder').trim();
+        function synchSeamlessEditable(obj, text) {
+            if (!text && $(obj).attr('placeholder')) {
+                text = $(obj).attr('placeholder').trim();
+            }
+            var maxlength = $(obj).attr('maxlength');
+            if (maxlength != undefined && maxlength > 0 && text.length > maxlength) {
+                return false;
+            }
+            $('.seamless-editable-dummy-container').text(text);
+            $('.seamless-editable-dummy-container').css({
+                'font-size': $(obj).css('font-size'),
+                'font-family': $(obj).css('font-family'),
+                'font-weight': $(obj).css('font-weight'),
+                'line-height': $(obj).css('line-height'),
+                'padding-top': $(obj).css('padding-top'),
+                'padding-right': $(obj).css('padding-right'),
+                'padding-bottom': $(obj).css('padding-bottom'),
+                'padding-left': $(obj).css('padding-left'),
+                'max-width': $(obj).css('max-width')
+            });
+            $(obj).width($('.seamless-editable-dummy-container').width() + 5);
+            if (typeof window[settings.postKeyPressFunction] == 'function') {
+                settings.text = text;
+                eval(settings.postKeyPressFunction+'(settings)');
+            }
         }
-        var maxlength = $(obj).attr('maxlength');
-        if (maxlength != undefined && maxlength > 0 && text.length > maxlength) {
-            return false;
-        }
-        $('.seamless-editable-dummy-container').text(text);
-        $('.seamless-editable-dummy-container').css({
-            'font-size': $(obj).css('font-size'),
-            'font-family': $(obj).css('font-family'),
-            'font-weight': $(obj).css('font-weight'),
-            'line-height': $(obj).css('line-height'),
-            'padding-top': $(obj).css('padding-top'),
-            'padding-right': $(obj).css('padding-right'),
-            'padding-bottom': $(obj).css('padding-bottom'),
-            'padding-left': $(obj).css('padding-left'),
-            'max-width': $(obj).css('max-width')
-        });
-        $(obj).width($('.seamless-editable-dummy-container').width() + 5);
-    }
+    };
 }( jQuery ));
+
